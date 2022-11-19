@@ -16,6 +16,7 @@ interface TableModalProps{
 
     function handleSave(){
       onSave(table);
+      setTable('');
       onclose();
     }
 
