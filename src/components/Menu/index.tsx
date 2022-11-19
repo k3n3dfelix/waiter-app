@@ -1,15 +1,27 @@
+import { useState } from "react";
 import { FlatList,  } from "react-native";
 
 import { products } from '../../mocks/products';
+import { Product } from "../../types/product";
 import { formatCurrency } from "../../utils/formatCurrency";
 import { PlusCircle } from "../Icons/PlusCircle";
+import { ProductModal } from "../ProductModal";
 
 import { Text } from "../Text";
 
-import { Product, ProductImage, ProductDetails, Separator,AddToCartButton} from './styles'
+import { ProductContainer, ProductImage, ProductDetails, Separator,AddToCartButton} from './styles'
 export function Menu() {
-  
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [selectedProduct, setSelectedProduct] = useState<null | Product>(null);
+
+
+  function handleOpenModal(product : Product) {
+    setIsModalVisible(true);
+    setSelectedProduct(product);
+
+  }
   return (
+    <>
     <FlatList
       data={products}
       style={{ marginTop: 32}}
@@ -17,7 +29,7 @@ export function Menu() {
       keyExtractor={product => product._id}
       ItemSeparatorComponent={Separator}
       renderItem={({ item: product}) => (
-        <Product>
+        <ProductContainer onPress={() => handleOpenModal(product)}>
           <ProductImage 
             source={require('../../../assets/food2.jpg')}
           />
@@ -29,9 +41,15 @@ export function Menu() {
           <AddToCartButton>
               <PlusCircle></PlusCircle>
           </AddToCartButton>
-        </Product>
+        </ProductContainer>
         
       )}
     />
+    <ProductModal 
+      visible={isModalVisible}
+      onClose={() => setIsModalVisible(false)}
+      product={selectedProduct}
+    />
+    </>
   );
 }
