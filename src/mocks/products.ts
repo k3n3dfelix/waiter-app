@@ -1,4 +1,4 @@
-export const products = [
+export const productss = [
   {
     _id: '6372e040f52e37ef85fe2c5e',
     name: 'Pizza quatro queijos',
